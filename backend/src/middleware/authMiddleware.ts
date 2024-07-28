@@ -7,7 +7,7 @@ dotenv.config();
 declare global {
   namespace Express {
     interface Request {
-      userId: string | JwtPayload;
+      userId: string;
     }
   }
 }

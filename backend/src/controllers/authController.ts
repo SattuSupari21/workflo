@@ -80,7 +80,7 @@ export const loginUser = async (req: Request, res: Response) => {
 declare global {
   namespace Express {
     interface Request {
-      userId: string | JwtPayload;
+      userId: string;
     }
   }
 }
