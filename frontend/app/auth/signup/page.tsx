@@ -27,7 +27,7 @@ export default function Login() {
         </Button>
         <span className="m-auto text-zinc-500">
           Already have an account?{" "}
-          <Link href={"/"} className="text-blue-600">
+          <Link href={"/auth/login"} className="text-blue-600">
             Log in
           </Link>
           .
