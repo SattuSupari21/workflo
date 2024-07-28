@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../../lib";
 
 dotenv.config();
@@ -75,4 +75,20 @@ export const loginUser = async (req: Request, res: Response) => {
     const error = (e as Error).message;
     return res.status(500).json({ status: "error", error });
   }
+};
+
+declare global {
+  namespace Express {
+    interface Request {
+      userId: string | JwtPayload;
+    }
+  }
+}
+
+export const middlewareTest = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  return res.send(req.userId);
 };
