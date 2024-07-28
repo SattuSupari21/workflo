@@ -36,3 +36,65 @@ export const createTask = async (req: Request, res: Response) => {
     return res.status(500).json({ error });
   }
 };
+
+export const updateTask = async (req: Request, res: Response) => {
+  try {
+    // check if the task exists or not
+    const { taskId } = req.body;
+    const task = await prisma.task.findUnique({
+      where: {
+        id: taskId,
+      },
+    });
+
+    if (!task) {
+      return res.status(404).json({ error: "Invalid Task!" });
+    }
+
+    const { title, description, status, priority, deadline } = req.body;
+    const userId = req.userId;
+    const updatedEntry = await prisma.task.update({
+      where: {
+        id: taskId,
+      },
+      data: {
+        title,
+        description,
+        status,
+        priority,
+        deadline,
+        userId,
+      },
+    });
+    return res.status(204).json({ updatedEntry });
+  } catch (e) {
+    const error = (e as Error).message;
+    return res.status(500).json({ error });
+  }
+};
+
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    // check if the task exists or not
+    const { taskId } = req.body;
+    const task = await prisma.task.findUnique({
+      where: {
+        id: taskId,
+      },
+    });
+
+    if (!task) {
+      return res.status(404).json({ error: "Invalid Task!" });
+    }
+
+    await prisma.task.delete({
+      where: {
+        id: taskId,
+      },
+    });
+    return res.status(204);
+  } catch (e) {
+    const error = (e as Error).message;
+    return res.status(500).json({ error });
+  }
+};
