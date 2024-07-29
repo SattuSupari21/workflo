@@ -28,7 +28,7 @@ export default function MainBody() {
       title: "temp 2",
       desc: "temp 2 desc",
       status: "To do",
-      priority: "Urgent",
+      priority: "Low",
       deadline: "2024-07-28T09:09:30.904+00:00",
     },
     {
@@ -44,7 +44,7 @@ export default function MainBody() {
       title: "temp 4",
       desc: "temp 4 desc",
       status: "In progress",
-      priority: "Urgent",
+      priority: "Medium",
       deadline: "2024-07-28T09:09:30.904+00:00",
     },
   ]);
@@ -77,6 +77,12 @@ export default function MainBody() {
     e.preventDefault();
   }
 
+  function getPriorityColor(priority: string) {
+    if (priority === "Urgent") return "bg-red-400";
+    else if (priority === "Medium") return "bg-yellow-400";
+    else if (priority === "Low") return "bg-green-400";
+  }
+
   function RenderTasks({ status }: { status: string }) {
     return (
       <div
@@ -99,7 +105,9 @@ export default function MainBody() {
                   <span className="font-semibold">{item.title}</span>
                   <span className="text-sm text-balance">{item.desc}</span>
                 </div>
-                <span className="p-2 bg-red-400 mr-auto text-white text-sm rounded-xl">
+                <span
+                  className={`p-2 ${getPriorityColor(item.priority)} mr-auto text-white text-sm rounded-xl`}
+                >
                   {item.priority}
                 </span>
                 <div className="flex gap-2 text-sm font-semibold items-center">

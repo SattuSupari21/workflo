@@ -42,12 +42,14 @@ export default function HeaderItems() {
         {headerItems.map((item) => {
           return (
             <div className="flex bg-white rounded-md p-6" key={item.id}>
-              <Image
-                src={"/" + item.image}
-                width={70}
-                height={60}
-                alt={item.image}
-              />
+              <div className="w-[180px] h-auto flex items-center">
+                <Image
+                  src={"/" + item.image}
+                  width={500}
+                  height={500}
+                  alt={item.image}
+                />
+              </div>
               <div className="flex flex-col px-6 gap-1">
                 <span className="text-zinc-500 font-semibold">
                   {item.title}
