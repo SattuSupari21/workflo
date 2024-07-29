@@ -1,8 +1,26 @@
+"use client";
+
+import { registerUser } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+
+  const [showError, setShowError] = useState(false);
+
+  async function handleRegister() {
+    try {
+      await registerUser(email!, password!, username!);
+      setShowError(false);
+    } catch (e) {
+      setShowError(true);
+    }
+  }
   return (
     <main className="flex w-screen h-screen flex-col items-center bg-gradient-to-b from-slate-50 to-violet-400">
       <div className="flex flex-col gap-4 bg-white border-2 p-12 mt-24 rounded-xl">
@@ -13,16 +31,22 @@ export default function Login() {
           type="text"
           placeholder="Full name"
           className="bg-zinc-100 focus:border-none"
+          onChange={(e) => setUsername(e.target.value)}
         />
         <Input
           placeholder="Your email"
           className="bg-zinc-100 focus:border-none"
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           placeholder="Password"
           className="bg-zinc-100 focus:border-none"
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <Button className="bg-violet-400 shadow-xl hover:bg-violet-500">
+        <Button
+          className="bg-violet-400 shadow-xl hover:bg-violet-500"
+          onClick={handleRegister}
+        >
           Sign up
         </Button>
         <span className="m-auto text-zinc-500">

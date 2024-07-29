@@ -21,6 +21,28 @@ export async function loginUser(email: string, password: string) {
   }
 }
 
+export async function registerUser(
+  email: string,
+  password: string,
+  username: string,
+) {
+  const res = await axios.post(
+    process.env.api + "/auth/registerUser",
+    { email, password, username },
+    {
+      headers: {
+        "content-type": "application/json",
+      },
+    },
+  );
+  if (res.status === 201) {
+    const data = await res.data;
+    cookies().set("token", data.token);
+    redirect("/dashboard");
+  }
+}
+
 export async function logoutUser() {
-  cookies().set("token", "");
+  cookies().delete("token");
+  redirect("/auth/login");
 }

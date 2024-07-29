@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowDownToLine,
   BellDot,
@@ -11,6 +13,7 @@ import {
   Users,
 } from "lucide-react";
 import { Button } from "./ui/button";
+import { logoutUser } from "@/app/actions";
 
 export default function Sidebar() {
   return (
@@ -26,7 +29,11 @@ export default function Sidebar() {
           <Loader className="w-5 h-5 " />
           <ChevronsRight className="w-5 h-5 " />
         </div>
-        <Button className="text-sm h-8 px-2" variant={"outline"}>
+        <Button
+          className="text-sm h-8 px-2"
+          variant={"outline"}
+          onClick={() => logoutUser()}
+        >
           Logout
         </Button>
       </div>

@@ -34,10 +34,17 @@ export const registerUser = async (req: Request, res: Response) => {
       },
     });
 
+    const token = jwt.sign(
+      { userId: newUser.id },
+      process.env.JWT_SECRET || "dhere-dhere-bol-koi-sun-na-le",
+      {
+        expiresIn: "1h",
+      },
+    );
+
     return res.status(201).json({
-      status: "success",
       message: "User registered successfully",
-      newUser,
+      token,
     });
   } catch (e) {
     const error = (e as Error).message;
