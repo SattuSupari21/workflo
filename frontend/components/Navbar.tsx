@@ -14,7 +14,7 @@ export default function Navbar() {
     <div className="flex items-center justify-between">
       <div className="flex items-center justify-between relative">
         <Input type="text" placeholder="Search" />
-        <Search className="absolute right-0 mr-2 text-zinc-400" />
+        <Search className="absolute right-2 text-zinc-400" />
       </div>
       <div className="flex gap-2">
         <Button variant={"outline"}>

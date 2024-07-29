@@ -10,12 +10,11 @@ import {
   SquareKanban,
   Users,
 } from "lucide-react";
-import Image from "next/image";
 import { Button } from "./ui/button";
 
 export default function Sidebar() {
   return (
-    <div className="w-[285px] h-screen flex flex-col gap-4 border-r-2 p-4">
+    <div className="w-[285px] h-screen fixed flex flex-col gap-4 border-r-2 p-4">
       <div className="flex gap-2 items-center">
         <div className="w-6 h-6 bg-zinc-200 rounded-md"></div>
         <span className="text-lg font-medium">Joe Gardner</span>
