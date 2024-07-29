@@ -35,7 +35,7 @@ export default function MainBody() {
       id: 3,
       title: "temp 3",
       desc: "temp 3 desc",
-      status: "To do",
+      status: "Under review",
       priority: "Urgent",
       deadline: "2024-07-28T09:09:30.904+00:00",
     },
@@ -56,6 +56,8 @@ export default function MainBody() {
   const dragItem = useRef<number>();
   const dragOverItem = useRef<number>();
 
+  const [active, setActive] = useState(false);
+
   function handleOnDrag(e: React.DragEvent, item: TaskType) {
     e.dataTransfer.setData("item", JSON.stringify(item));
   }
@@ -74,6 +76,7 @@ export default function MainBody() {
   }
 
   function handleDragOver(e: React.DragEvent) {
+    setActive(true);
     e.preventDefault();
   }
 
@@ -87,7 +90,7 @@ export default function MainBody() {
     return (
       <div
         id={status}
-        className="min-h-full pb-4 flex flex-col gap-4"
+        className={`h-full pb-4 flex flex-col gap-4 rounded-lg`}
         onDrop={handleOnDrop}
         onDragOver={handleDragOver}
       >
@@ -128,13 +131,14 @@ export default function MainBody() {
   return (
     <div className="flex justify-between bg-white p-4 rounded-lg gap-4">
       {TaskStatus.map((status, index) => (
-        <div className="w-full space-y-2" key={index}>
+        <div className="w-full flex flex-col gap-4" key={index}>
           <div className="flex justify-between">
             <span>{status}</span>
             <ListFilter />
           </div>
-          {/* <div className="flex h-full bg-yellow-400"></div> */}
-          <RenderTasks status={status} />
+          <div className="h-full">
+            <RenderTasks status={status} />
+          </div>
         </div>
       ))}
     </div>
