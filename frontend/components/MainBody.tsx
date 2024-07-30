@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { TaskContext } from "@/context/taskContext";
 import { deleteTask, getAllTasks } from "@/app/actions";
 import CreateNewTaskDialog from "./CreateNewTaskDialog";
+import UpdateTaskDialog from "./UpdateTaskDialog";
 
 type TaskType = {
   id: number;
@@ -13,7 +14,7 @@ type TaskType = {
   description?: string;
   status: string;
   priority?: string;
-  deadline?: string;
+  deadline?: Date;
 };
 
 export default function MainBody() {
@@ -108,9 +109,7 @@ export default function MainBody() {
                     >
                       <Trash className="w-5 h-5" />
                     </Button>
-                    <Button variant={"outline"} size={"icon"} className="">
-                      <Pencil className="w-5 h-5" />
-                    </Button>
+                    <UpdateTaskDialog task={item} />
                   </div>
                 </div>
               );

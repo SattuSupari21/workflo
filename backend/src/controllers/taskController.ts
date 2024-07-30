@@ -40,10 +40,10 @@ export const createTask = async (req: Request, res: Response) => {
 export const updateTask = async (req: Request, res: Response) => {
   try {
     // check if the task exists or not
-    const { taskId } = req.params;
+    const { id } = req.params;
     const task = await prisma.task.findUnique({
       where: {
-        id: taskId,
+        id,
       },
     });
 
@@ -55,7 +55,7 @@ export const updateTask = async (req: Request, res: Response) => {
     const userId = req.userId;
     const updatedEntry = await prisma.task.update({
       where: {
-        id: taskId,
+        id,
       },
       data: {
         title,
@@ -66,7 +66,7 @@ export const updateTask = async (req: Request, res: Response) => {
         userId,
       },
     });
-    return res.status(204).json({ updatedEntry });
+    return res.json({updatedEntry});
   } catch (e) {
     const error = (e as Error).message;
     return res.status(500).json({ error });

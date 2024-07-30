@@ -107,3 +107,30 @@ export async function deleteTask(id: number) {
     return redirect("/dashboard");
   }
 }
+
+export async function updateTask(
+  id: number,
+  title: string,
+  status: string,
+  priority: string,
+  deadline: Date | undefined,
+  description: string
+) {
+  try {
+    const res = await axios.put(
+      process.env.api + `/task/updateTask/${id}`,
+      { title, status, priority, deadline, description },
+      {
+        headers: {
+          "content-type": "application/json",
+          Authorization: cookies().get("token")?.value,
+        },
+      },
+    );
+
+    //@ts-ignore
+    return res.data.updatedEntry;
+  } catch (error) {
+    redirect("/dashboard");
+  }
+}
