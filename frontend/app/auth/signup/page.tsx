@@ -3,20 +3,29 @@
 import { registerUser } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { UserContext } from "@/context/userContext";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
 
-export default function Login() {
+export default function Signup() {
+  // @ts-ignore
+  const { setName } = useContext(UserContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
   const [showError, setShowError] = useState(false);
 
+  const router = useRouter();
+
   async function handleRegister() {
     try {
-      await registerUser(email!, password!, username!);
+      const name = await registerUser(email!, password!, username!);
+      setName(name);
       setShowError(false);
+      router.push("/");
     } catch (e) {
       setShowError(true);
     }

@@ -1,5 +1,9 @@
+"use client";
+
+import { UserContext } from "@/context/userContext";
 import { CircleHelp } from "lucide-react";
 import Image from "next/image";
+import { useContext } from "react";
 
 type HeaderItemType = {
   id: number;
@@ -30,10 +34,15 @@ const headerItems: HeaderItemType[] = [
 ];
 
 export default function HeaderItems() {
+  // @ts-ignore
+  const { name } = useContext(UserContext);
+
   return (
     <div>
       <div className="flex items-center justify-between">
-        <span className="text-5xl font-bold">Good morning, Joe!</span>
+        <span className="text-5xl font-bold">
+          Good morning, <span>{name}</span>!
+        </span>
         <span className="flex gap-2">
           Help & feedback <CircleHelp />
         </span>

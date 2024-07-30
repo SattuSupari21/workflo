@@ -3,19 +3,28 @@
 import { loginUser } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { UserContext } from "@/context/userContext";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
 
 export default function Login() {
+  // @ts-ignore
+  const { setName } = useContext(UserContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [showError, setShowError] = useState(false);
 
+  const router = useRouter();
+
   async function handleLogin() {
     try {
-      await loginUser(email!, password!);
+      const username = await loginUser(email!, password!);
+      setName(username);
       setShowError(false);
+      router.push("/");
     } catch (e) {
       setShowError(true);
     }

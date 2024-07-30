@@ -16,13 +16,18 @@ import { Button } from "./ui/button";
 import { logoutUser } from "@/app/actions";
 import { NewTaskComponent } from "./NewTaskComponent";
 import CreateNewTaskDialog from "./CreateNewTaskDialog";
+import { useContext } from "react";
+import { UserContext } from "@/context/userContext";
 
 export default function Sidebar() {
+  // @ts-ignore
+  const { name } = useContext(UserContext);
+
   return (
     <div className="w-[285px] h-screen fixed flex flex-col gap-4 border-r-2 p-4">
       <div className="flex gap-2 items-center">
         <div className="w-6 h-6 bg-zinc-200 rounded-md"></div>
-        <span className="text-lg font-medium">Joe Gardner</span>
+        <span className="text-lg font-medium">{name}</span>
       </div>
 
       <div className="flex items-center justify-between text-zinc-500">

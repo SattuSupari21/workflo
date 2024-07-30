@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import { TaskContext, TaskProvider } from "@/context/taskContext";
 import { useContext, useEffect } from "react";
 import { getAllTasks } from "../actions";
+import { UserProvider } from "@/context/userContext";
 
 export default function DashboardLayout({
   children,

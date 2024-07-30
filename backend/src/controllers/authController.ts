@@ -43,7 +43,7 @@ export const registerUser = async (req: Request, res: Response) => {
     );
 
     return res.status(201).json({
-      message: "User registered successfully",
+      username: newUser.name,
       token,
     });
   } catch (e) {
@@ -77,7 +77,7 @@ export const loginUser = async (req: Request, res: Response) => {
       },
     );
 
-    return res.status(200).json(token);
+    return res.status(200).json({ username: user.name, token });
   } catch (e) {
     const error = (e as Error).message;
     return res.status(500).json({ status: "error", error });

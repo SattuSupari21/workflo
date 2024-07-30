@@ -17,8 +17,9 @@ export async function loginUser(email: string, password: string) {
   if (res.status === 200) {
     const data = await res.data;
     // @ts-ignore
-    cookies().set("token", data);
-    redirect("/dashboard");
+    cookies().set("token", data.token);
+    // @ts-ignore
+    return data.username;
   }
 }
 
@@ -40,7 +41,8 @@ export async function registerUser(
     const data = await res.data;
     // @ts-ignore
     cookies().set("token", data.token);
-    redirect("/dashboard");
+    // @ts-ignore
+    return data.username;
   }
 }
 
@@ -100,10 +102,10 @@ export async function deleteTask(id: number) {
       headers: {
         Authorization: cookies().get("token")?.value,
       },
-    })
+    });
     return res.status;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return redirect("/dashboard");
   }
 }
@@ -114,7 +116,7 @@ export async function updateTask(
   status: string,
   priority: string,
   deadline: Date | undefined,
-  description: string
+  description: string,
 ) {
   try {
     const res = await axios.put(
