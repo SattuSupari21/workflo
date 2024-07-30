@@ -14,14 +14,14 @@ datasource db {
 }
 
 model Task {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   status      String
   priority    String?
-  deadline    DateTime
-  userId      String   @db.ObjectId
-  User        User     @relation(fields: [userId], references: [id])
+  deadline    DateTime?
+  userId      String    @db.ObjectId
+  User        User      @relation(fields: [userId], references: [id])
 }
 
 model User {
