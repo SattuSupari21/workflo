@@ -1,10 +1,10 @@
 "use client";
 
 import { useContext, useEffect, useRef, useState } from "react";
-import { Clock3, ListFilter, Plus } from "lucide-react";
+import { Clock3, Delete, ListFilter, Pencil, Plus, Trash } from "lucide-react";
 import { Button } from "./ui/button";
 import { TaskContext } from "@/context/taskContext";
-import { getAllTasks } from "@/app/actions";
+import { deleteTask, getAllTasks } from "@/app/actions";
 
 type TaskType = {
   id: number;
@@ -18,43 +18,6 @@ type TaskType = {
 export default function MainBody() {
   // @ts-ignore
   const { tasks, setTasks } = useContext(TaskContext);
-
-  // const [tasks, setTasks] = useState();
-
-  //   <TaskType[]>([
-  //   {
-  //     id: 1,
-  //     title: "temp 1",
-  //     description: "Easily categorize and find your notes by adding tags. Keep your workspace clutter-free and efficient.",
-  //     status: "To do",
-  //     priority: "Urgent",
-  //     deadline: "2024-07-28T09:09:30.904+00:00",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "temp 2",
-  //     description: "temp 2 description",
-  //     status: "To do",
-  //     priority: "Low",
-  //     deadline: "2024-07-28T09:09:30.904+00:00",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "temp 3",
-  //     description: "temp 3 description",
-  //     status: "Under review",
-  //     priority: "Urgent",
-  //     deadline: "2024-07-28T09:09:30.904+00:00",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "temp 4",
-  //     description: "temp 4 description",
-  //     status: "In progress",
-  //     priority: "Medium",
-  //     deadline: "2024-07-28T09:09:30.904+00:00",
-  //   },
-  // ]);
 
   const TaskStatus = ["To do", "In progress", "Under review", "Finished"];
 
@@ -89,6 +52,15 @@ export default function MainBody() {
     if (priority === "Urgent") return "bg-red-400";
     else if (priority === "Medium") return "bg-yellow-400";
     else if (priority === "Low") return "bg-green-400";
+  }
+
+  async function handleDelete(id: number) {
+    await deleteTask(id).then((response) => {
+      if (response === 204) {
+        setTasks(
+          tasks.map((task: TaskType) => task.id !== id && { ...task }))
+      }
+    });
   }
 
   function RenderTasks({ status }: { status: string }) {
@@ -129,6 +101,19 @@ export default function MainBody() {
                       <span>{new Date(item.deadline).toDateString()}</span>
                     </div>
                   )}
+                  <div className="flex gap-2 justify-end">
+                    <Button
+                      variant={"outline"}
+                      size={"icon"}
+                      className="hover:bg-red-500 hover:text-white active:bg-red-700"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <Trash className="w-5 h-5" />
+                    </Button>
+                    <Button variant={"outline"} size={"icon"} className="">
+                      <Pencil className="w-5 h-5" />
+                    </Button>
+                  </div>
                 </div>
               );
             })}

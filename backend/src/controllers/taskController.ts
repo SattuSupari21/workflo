@@ -40,7 +40,7 @@ export const createTask = async (req: Request, res: Response) => {
 export const updateTask = async (req: Request, res: Response) => {
   try {
     // check if the task exists or not
-    const { taskId } = req.body;
+    const { taskId } = req.params;
     const task = await prisma.task.findUnique({
       where: {
         id: taskId,
@@ -76,10 +76,10 @@ export const updateTask = async (req: Request, res: Response) => {
 export const deleteTask = async (req: Request, res: Response) => {
   try {
     // check if the task exists or not
-    const { taskId } = req.body;
+    const { id } = req.params;
     const task = await prisma.task.findUnique({
       where: {
-        id: taskId,
+        id,
       },
     });
 
@@ -89,10 +89,10 @@ export const deleteTask = async (req: Request, res: Response) => {
 
     await prisma.task.delete({
       where: {
-        id: taskId,
+        id,
       },
     });
-    return res.status(204);
+    return res.status(204).json({msg: "Deleted successfully!"});
   } catch (e) {
     const error = (e as Error).message;
     return res.status(500).json({ error });

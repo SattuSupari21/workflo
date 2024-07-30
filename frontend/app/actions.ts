@@ -44,7 +44,7 @@ export async function registerUser(
 
 export async function logoutUser() {
   cookies().delete("token");
-  redirect("/auth/login");
+  return redirect("/auth/login");
 }
 
 export async function getAllTasks() {
@@ -60,7 +60,7 @@ export async function getAllTasks() {
       return res.data;
     }
   } catch (error) {
-    redirect("/dashboard");
+    return redirect("/dashboard");
   }
 }
 
@@ -89,5 +89,19 @@ export async function createNewTask(
     }
   } catch (error) {
     redirect("/dashboard");
+  }
+}
+
+export async function deleteTask(id: number) {
+  try {
+    const res = await axios.delete(process.env.api + `/task/deleteTask/${id}`, {
+      headers: {
+        Authorization: cookies().get("token")?.value,
+      },
+    })
+    return res.status;
+  } catch (error) {
+    console.log(error)
+    return redirect("/dashboard");
   }
 }
