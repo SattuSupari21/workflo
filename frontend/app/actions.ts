@@ -16,6 +16,7 @@ export async function loginUser(email: string, password: string) {
   );
   if (res.status === 200) {
     const data = await res.data;
+    // @ts-ignore
     cookies().set("token", data);
     redirect("/dashboard");
   }
@@ -37,6 +38,7 @@ export async function registerUser(
   );
   if (res.status === 201) {
     const data = await res.data;
+    // @ts-ignore
     cookies().set("token", data.token);
     redirect("/dashboard");
   }

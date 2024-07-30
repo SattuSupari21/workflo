@@ -33,7 +33,7 @@ export default function Navbar() {
         <Button variant={"outline"}>
           Share <Share2 className="ml-2" />
         </Button>
-        <CreateNewTaskDialog />
+        <CreateNewTaskDialog label="Create new" />
       </div>
     </div>
   );

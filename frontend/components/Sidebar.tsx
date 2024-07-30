@@ -15,6 +15,7 @@ import {
 import { Button } from "./ui/button";
 import { logoutUser } from "@/app/actions";
 import { NewTaskComponent } from "./NewTaskComponent";
+import CreateNewTaskDialog from "./CreateNewTaskDialog";
 
 export default function Sidebar() {
   return (
@@ -77,10 +78,7 @@ export default function Sidebar() {
         </Button>
       </div>
 
-      <Button className="bg-violet-800 hover:bg-violet-900">
-        Create new task
-        <CirclePlus className="w-5 h-5 ml-2" />
-      </Button>
+      <CreateNewTaskDialog label="Create new task" />
 
       <Button className="bg-zinc-200 hover:bg-zinc-300 text-zinc-500 flex items-center justify-between py-6 gap-2 mt-auto">
         <ArrowDownToLine />

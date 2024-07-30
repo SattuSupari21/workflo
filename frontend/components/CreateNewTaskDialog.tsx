@@ -29,10 +29,10 @@ import { validateNewTaskType } from "@/types/NewTaskType";
 import { createNewTask } from "@/app/actions";
 import { TaskContext } from "@/context/taskContext";
 
-export default function CreateNewTaskDialog() {
+export default function CreateNewTaskDialog({label, statusValue}: {label: string, statusValue?: string}) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
+  const [status, setStatus] = useState<string>(statusValue ? statusValue : "");
   const [priority, setPriority] = useState<string>("");
   const [date, setDate] = useState<Date>();
 
@@ -75,9 +75,9 @@ export default function CreateNewTaskDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="flex items-center p-2 text-white rounded-md bg-violet-800 hover:bg-violet-900 shadow-lg">
-        Create new
-        <CirclePlus className="w-5 h-5 ml-2" />
+      <DialogTrigger className={`flex items-center justify-center p-2 text-white rounded-md ${label !== "Add new" ? 'bg-violet-800 hover:bg-violet-900' : "bg-zinc-800 hover:bg-zinc-900"} shadow-lg`}>
+        {label}
+        {label === "Add new" ? <Plus className="w-5 h-5 ml-auto" /> : <CirclePlus className="w-5 h-5 ml-2" />}
       </DialogTrigger>
       <DialogContent className="flex flex-col gap-8 text-zinc-700">
         <input
@@ -92,7 +92,7 @@ export default function CreateNewTaskDialog() {
               <Loader className="w-5 h-5" />
               Status
             </div>
-            <Select onValueChange={(value) => setStatus(value)}>
+            <Select onValueChange={(value) => setStatus(value)} defaultValue={statusValue}>
               <SelectTrigger className="border-0 max-w-[300px]">
                 <SelectValue placeholder="Not selected" />
               </SelectTrigger>

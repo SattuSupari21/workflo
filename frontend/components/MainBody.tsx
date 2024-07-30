@@ -5,6 +5,7 @@ import { Clock3, Delete, ListFilter, Pencil, Plus, Trash } from "lucide-react";
 import { Button } from "./ui/button";
 import { TaskContext } from "@/context/taskContext";
 import { deleteTask, getAllTasks } from "@/app/actions";
+import CreateNewTaskDialog from "./CreateNewTaskDialog";
 
 type TaskType = {
   id: number;
@@ -20,9 +21,6 @@ export default function MainBody() {
   const { tasks, setTasks } = useContext(TaskContext);
 
   const TaskStatus = ["To do", "In progress", "Under review", "Finished"];
-
-  const dragItem = useRef<number>();
-  const dragOverItem = useRef<number>();
 
   const [active, setActive] = useState(false);
 
@@ -117,10 +115,7 @@ export default function MainBody() {
                 </div>
               );
             })}
-        <Button className="shadow-lg">
-          Add new
-          <Plus className="w-5 h-5 ml-auto" />
-        </Button>
+        <CreateNewTaskDialog label="Add new" statusValue={status}/>
       </div>
     );
   }
