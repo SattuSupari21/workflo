@@ -47,6 +47,23 @@ export async function logoutUser() {
   redirect("/auth/login");
 }
 
+export async function getAllTasks() {
+  try {
+    const res = await axios.get(process.env.api + "/task/getAllTasks", {
+      headers: {
+        "content-type": "application/json",
+        Authorization: cookies().get("token")?.value,
+      },
+    });
+
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (error) {
+    redirect("/dashboard");
+  }
+}
+
 export async function createNewTask(
   title: string,
   status: string,
@@ -67,7 +84,8 @@ export async function createNewTask(
     );
 
     if (res.status === 201) {
-      redirect("/dashboard");
+      //@ts-ignore
+      return res.data.newEntry;
     }
   } catch (error) {
     redirect("/dashboard");

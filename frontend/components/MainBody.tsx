@@ -1,57 +1,62 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Clock3, ListFilter, Plus } from "lucide-react";
 import { Button } from "./ui/button";
+import { TaskContext } from "@/context/taskContext";
+import { getAllTasks } from "@/app/actions";
 
 type TaskType = {
   id: number;
   title: string;
-  desc: string;
+  description?: string;
   status: string;
-  priority: string;
-  deadline: string;
+  priority?: string;
+  deadline?: string;
 };
 
 export default function MainBody() {
-  const [tasks, setTasks] = useState<TaskType[]>([
-    {
-      id: 1,
-      title: "temp 1",
-      desc: "Easily categorize and find your notes by adding tags. Keep your workspace clutter-free and efficient.",
-      status: "To do",
-      priority: "Urgent",
-      deadline: "2024-07-28T09:09:30.904+00:00",
-    },
-    {
-      id: 2,
-      title: "temp 2",
-      desc: "temp 2 desc",
-      status: "To do",
-      priority: "Low",
-      deadline: "2024-07-28T09:09:30.904+00:00",
-    },
-    {
-      id: 3,
-      title: "temp 3",
-      desc: "temp 3 desc",
-      status: "Under review",
-      priority: "Urgent",
-      deadline: "2024-07-28T09:09:30.904+00:00",
-    },
-    {
-      id: 4,
-      title: "temp 4",
-      desc: "temp 4 desc",
-      status: "In progress",
-      priority: "Medium",
-      deadline: "2024-07-28T09:09:30.904+00:00",
-    },
-  ]);
+  // @ts-ignore
+  const { tasks, setTasks } = useContext(TaskContext);
+
+  // const [tasks, setTasks] = useState();
+
+  //   <TaskType[]>([
+  //   {
+  //     id: 1,
+  //     title: "temp 1",
+  //     description: "Easily categorize and find your notes by adding tags. Keep your workspace clutter-free and efficient.",
+  //     status: "To do",
+  //     priority: "Urgent",
+  //     deadline: "2024-07-28T09:09:30.904+00:00",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "temp 2",
+  //     description: "temp 2 description",
+  //     status: "To do",
+  //     priority: "Low",
+  //     deadline: "2024-07-28T09:09:30.904+00:00",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "temp 3",
+  //     description: "temp 3 description",
+  //     status: "Under review",
+  //     priority: "Urgent",
+  //     deadline: "2024-07-28T09:09:30.904+00:00",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "temp 4",
+  //     description: "temp 4 description",
+  //     status: "In progress",
+  //     priority: "Medium",
+  //     deadline: "2024-07-28T09:09:30.904+00:00",
+  //   },
+  // ]);
 
   const TaskStatus = ["To do", "In progress", "Under review", "Finished"];
-
-  const todoArr = tasks.filter((item) => item.status === "To do");
 
   const dragItem = useRef<number>();
   const dragOverItem = useRef<number>();
@@ -67,7 +72,7 @@ export default function MainBody() {
     // @ts-ignore
     if (e.target.id) {
       setTasks(
-        tasks.map((task) =>
+        tasks.map((task: TaskType) =>
           // @ts-ignore
           task.id === item.id ? { ...task, status: e.target.id } : task,
         ),
@@ -94,32 +99,39 @@ export default function MainBody() {
         onDrop={handleOnDrop}
         onDragOver={handleDragOver}
       >
-        {tasks
-          .filter((task) => task.status === status)
-          .map((item) => {
-            return (
-              <div
-                key={item.id}
-                className="flex flex-col gap-4 p-4 border bg-zinc-100 rounded-lg"
-                draggable={true}
-                onDragStart={(e) => handleOnDrag(e, item)}
-              >
-                <div className="flex flex-col">
-                  <span className="font-semibold">{item.title}</span>
-                  <span className="text-sm text-wrap">{item.desc}</span>
-                </div>
-                <span
-                  className={`p-2 ${getPriorityColor(item.priority)} mr-auto text-white text-sm rounded-xl`}
+        {tasks &&
+          tasks
+            .filter((task: TaskType) => task.status === status)
+            .map((item: TaskType) => {
+              return (
+                <div
+                  key={item.id}
+                  className="flex flex-col gap-4 p-4 border bg-zinc-100 rounded-lg"
+                  draggable={true}
+                  onDragStart={(e) => handleOnDrag(e, item)}
                 >
-                  {item.priority}
-                </span>
-                <div className="flex gap-2 text-sm font-semibold items-center">
-                  <Clock3 />
-                  <span>{new Date(item.deadline).toDateString()}</span>
+                  <div className="flex flex-col">
+                    <span className="font-semibold">{item.title}</span>
+                    <span className="text-sm text-wrap">
+                      {item.description}
+                    </span>
+                  </div>
+                  {item.priority && (
+                    <span
+                      className={`p-2 ${getPriorityColor(item.priority)} mr-auto text-white text-sm rounded-xl`}
+                    >
+                      {item.priority}
+                    </span>
+                  )}
+                  {item.deadline && (
+                    <div className="flex gap-2 text-sm font-semibold items-center">
+                      <Clock3 />
+                      <span>{new Date(item.deadline).toDateString()}</span>
+                    </div>
+                  )}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         <Button className="shadow-lg">
           Add new
           <Plus className="w-5 h-5 ml-auto" />

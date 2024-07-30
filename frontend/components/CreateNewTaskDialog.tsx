@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Calendar as CalendarIcon,
   CirclePlus,
@@ -27,6 +27,7 @@ import { Button } from "./ui/button";
 
 import { validateNewTaskType } from "@/types/NewTaskType";
 import { createNewTask } from "@/app/actions";
+import { TaskContext } from "@/context/taskContext";
 
 export default function CreateNewTaskDialog() {
   const [title, setTitle] = useState<string>("");
@@ -37,8 +38,19 @@ export default function CreateNewTaskDialog() {
 
   const [open, setOpen] = useState(false);
 
+  // @ts-ignore
+  const { setTasks } = useContext(TaskContext);
+
   async function handleNewTaskCreation() {
-    await createNewTask(title!, status!, priority!, date!, description!);
+    const newTask = await createNewTask(
+      title!,
+      status!,
+      priority!,
+      date!,
+      description!,
+    );
+    // @ts-ignore
+    setTasks((prev) => [...prev, newTask]);
     setTitle("");
     setDescription("");
     setStatus("");
