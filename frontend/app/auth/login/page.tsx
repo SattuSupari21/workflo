@@ -58,7 +58,7 @@ export default function Login() {
           Login
         </Button>
         <span className="m-auto text-zinc-500">
-          Don't have an account? Create a{" "}
+          Dont have an account? Create a
           <Link href={"/auth/signup"} className="text-blue-600">
             new account
           </Link>

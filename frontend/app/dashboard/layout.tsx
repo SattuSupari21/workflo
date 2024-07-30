@@ -26,6 +26,7 @@ export default function DashboardLayout({
 
   useEffect(() => {
     getTasks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
