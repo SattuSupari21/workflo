@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Clock3, Delete, ListFilter, Pencil, Plus, Trash } from "lucide-react";
 import { Button } from "./ui/button";
 import { TaskContext } from "@/context/taskContext";
-import { deleteTask, getAllTasks } from "@/app/actions";
+import { deleteTask, getAllTasks, updateTask } from "@/app/actions";
 import CreateNewTaskDialog from "./CreateNewTaskDialog";
 import UpdateTaskDialog from "./UpdateTaskDialog";
 
@@ -29,8 +29,17 @@ export default function MainBody() {
     e.dataTransfer.setData("item", JSON.stringify(item));
   }
 
-  function handleOnDrop(e: React.DragEvent) {
+  async function handleOnDrop(e: React.DragEvent) {
     const item = JSON.parse(e.dataTransfer.getData("item"));
+    const updatedTask = await updateTask(
+      item.id,
+      item.title,
+      // @ts-ignore
+      e.target.id,
+      item.priority,
+      item.date,
+      item.description,
+  );
     // @ts-ignore
     if (e.target.id) {
       setTasks(
