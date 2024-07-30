@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { logoutUser } from "@/app/actions";
+import { NewTaskComponent } from "./NewTaskComponent";
 
 export default function Sidebar() {
   return (
