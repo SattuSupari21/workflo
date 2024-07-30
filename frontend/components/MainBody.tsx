@@ -106,7 +106,7 @@ export default function MainBody() {
               >
                 <div className="flex flex-col">
                   <span className="font-semibold">{item.title}</span>
-                  <span className="text-sm text-balance">{item.desc}</span>
+                  <span className="text-sm text-wrap">{item.desc}</span>
                 </div>
                 <span
                   className={`p-2 ${getPriorityColor(item.priority)} mr-auto text-white text-sm rounded-xl`}

@@ -25,11 +25,44 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 
+import { validateNewTaskType } from "@/types/NewTaskType";
+import { createNewTask } from "@/app/actions";
+
 export default function CreateNewTaskDialog() {
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [priority, setPriority] = useState<string>("");
   const [date, setDate] = useState<Date>();
 
+  const [open, setOpen] = useState(false);
+
+  async function handleNewTaskCreation() {
+    await createNewTask(title!, status!, priority!, date!, description!);
+    setTitle("");
+    setDescription("");
+    setStatus("");
+    setPriority("");
+    setDate(undefined);
+  }
+
+  useEffect(() => {
+    if (!open) {
+      const valid = validateNewTaskType({
+        title,
+        status,
+        priority,
+        deadline: date,
+        description,
+      });
+      if (valid.success) {
+        handleNewTaskCreation();
+      }
+    }
+  }, [open]);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="flex items-center p-2 text-white rounded-md bg-violet-800 hover:bg-violet-900 shadow-lg">
         Create new
         <CirclePlus className="w-5 h-5 ml-2" />
@@ -39,6 +72,7 @@ export default function CreateNewTaskDialog() {
           type="text"
           placeholder="Title"
           className="text-4xl p-0 border-0 mt-6 focus:outline-none font-semibold text-zinc-500"
+          onChange={(e) => setTitle(e.target.value)}
         />
         <div className="text-sm flex flex-col gap-3 text-zinc-500">
           <div className="flex justify-between">
@@ -46,7 +80,7 @@ export default function CreateNewTaskDialog() {
               <Loader className="w-5 h-5" />
               Status
             </div>
-            <Select>
+            <Select onValueChange={(value) => setStatus(value)}>
               <SelectTrigger className="border-0 max-w-[300px]">
                 <SelectValue placeholder="Not selected" />
               </SelectTrigger>
@@ -64,7 +98,7 @@ export default function CreateNewTaskDialog() {
               <TriangleAlert className="w-5 h-5" />
               Priority
             </div>
-            <Select>
+            <Select onValueChange={(value) => setPriority(value)}>
               <SelectTrigger className="border-0 max-w-[300px]">
                 <SelectValue placeholder="Not selected" />
               </SelectTrigger>
@@ -114,6 +148,7 @@ export default function CreateNewTaskDialog() {
               type="text"
               placeholder="Not selected"
               className="min-w-[300px] p-3 border-0 focus:outline-none text-zinc-500"
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
 

@@ -46,3 +46,30 @@ export async function logoutUser() {
   cookies().delete("token");
   redirect("/auth/login");
 }
+
+export async function createNewTask(
+  title: string,
+  status: string,
+  priority: string,
+  deadline: Date | undefined,
+  description: string,
+) {
+  try {
+    const res = await axios.post(
+      process.env.api + "/task/createTask",
+      { title, status, priority, deadline, description },
+      {
+        headers: {
+          "content-type": "application/json",
+          Authorization: cookies().get("token")?.value,
+        },
+      },
+    );
+
+    if (res.status === 201) {
+      redirect("/dashboard");
+    }
+  } catch (error) {
+    redirect("/dashboard");
+  }
+}
